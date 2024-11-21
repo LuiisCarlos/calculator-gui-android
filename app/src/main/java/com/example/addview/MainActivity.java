@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         if (v.getId() == R.id.clearBtn) {
             viewPanel.setText("");
             operation = new Operation();
-            setBackgroundButtonColors(R.color.orange);
+            setBackgroundButtonColors(0xFFBB8532);
         }  else if(v.getId() == R.id.negationBtn) {
             String view = viewPanel.getText().toString();
             if (!view.isEmpty() && !view.equals("Error")) {
@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             }
         } else if (v.getId() == R.id.divideBtn) {
             setValueOnOperation();
-            if (operation.getX() != null & operation.getY() != null) {
-                setBackgroundButtonColors(R.color.orange);
+            if (operation.getX() != null || operation.getY() != null) {
+                setBackgroundButtonColors(0xFFBB8532);
                 divideBtn.setBackgroundColor(Color.WHITE);
                 divideBtn.setTextColor(Color.BLACK);
                 operation.setOperator('/');
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             }
         } else if (v.getId() == R.id.multiplyBtn) {
             setValueOnOperation();
-            if (operation.getX() != null & operation.getY() != null) {
-                setBackgroundButtonColors(R.color.orange);
+            if (operation.getX() != null || operation.getY() != null) {
+                setBackgroundButtonColors(0xFFBB8532);
                 multiplyBtn.setBackgroundColor(Color.WHITE);
                 multiplyBtn.setTextColor(Color.BLACK);
                 operation.setOperator('x');
@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             }
         } else if (v.getId() == R.id.subtractBtn)  {
             setValueOnOperation();
-            if (operation.getX() != null & operation.getY() != null) {
-                setBackgroundButtonColors(R.color.orange);
+            if (operation.getX() != null || operation.getY() != null) {
+                setBackgroundButtonColors(0xFFBB8532);
                 subtractBtn.setBackgroundColor(Color.WHITE);
                 subtractBtn.setTextColor(Color.BLACK);
                 operation.setOperator('-');
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             }
         } else if (v.getId() == R.id.sumBtn) {
             setValueOnOperation();
-            if (operation.getX() != null & operation.getY() != null) {
-                setBackgroundButtonColors(R.color.orange);
+            if (operation.getX() != null || operation.getY() != null) {
+                setBackgroundButtonColors(0xFFBB8532);
                 sumBtn.setBackgroundColor(Color.WHITE);
                 sumBtn.setTextColor(Color.BLACK);
                 operation.setOperator('+');
@@ -102,31 +102,34 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         } else if (v.getId() == R.id.commaBtn) {
             setNumberInViewPanel(".");
         } else if(v.getId() == R.id.equalsBtn) {
-            setValueOnOperation();
-            if (operation.getX() != null && operation.getY() != null && operation.getOperator() != null) {
-                String result = operation.resolve();
-                viewPanel.setText(result);
-                operation.setX(Double.parseDouble(result));
-                operation.setY(null);
-            } else {
-                viewPanel.setText("Error");
+            String viewPanelContent = viewPanel.getText().toString();
+            if (!viewPanelContent.equals("Error")) {
+                setValueOnOperation();
+                if (operation.getX() != null && operation.getY() != null && operation.getOperator() != null) {
+                    String result = operation.resolve();
+                    viewPanel.setText(result);
+                    operation.setX(Double.parseDouble(result));
+                    operation.setY(null);
+                } else {
+                    viewPanel.setText("Error");
+                }
+                setBackgroundButtonColors(0xFFBB8532);
             }
-            setBackgroundButtonColors(R.color.orange);
         }
     }
 
     private void setNumberInViewPanel(String number) {
-        String view = viewPanel.getText().toString();
+        String viewPanelContent = viewPanel.getText().toString();
         if (number.equals(".")) {
-            if (view.equals("")) {
+            if (viewPanelContent.isEmpty()) {
                 viewPanel.setText("0.");
-            } else if (!view.contains(".")) {
-                viewPanel.setText(view + number);
+            } else if (!viewPanelContent.contains(".")) {
+                viewPanel.setText(viewPanelContent + number);
             }
-        } else if (view.equals("") || view.equals("Error")) {
+        } else if (viewPanelContent.isEmpty() || viewPanelContent.equals("Error")) {
             viewPanel.setText(number);
         } else {
-            viewPanel.setText(view + number);
+            viewPanel.setText(viewPanelContent + number);
         }
     }
 
@@ -135,12 +138,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         if (operation.getX() == null) {
             if (!view.isEmpty() && !view.equals("Error")) {
                 operation.setX(Double.parseDouble((String) viewPanel.getText()));
-                a.setText(String.valueOf(operation.getX()));
             }
         } else {
             if (!view.isEmpty() ) {
                 operation.setY(Double.parseDouble((String) viewPanel.getText()));
-                b.setText(String.valueOf(operation.getX()));
             }
         }
     }
@@ -159,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void initView() {
-        setBackgroundButtonColors(R.color.orange);
         viewPanel.setText("");
     }
 
@@ -218,10 +218,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         commaBtn.setOnClickListener(this);
         equalsBtn = findViewById(R.id.equalsBtn);
         equalsBtn.setOnClickListener(this);
-
-
-        a = findViewById(R.id.a);
-        b = findViewById(R.id.b);
     }
 
     // Components
@@ -245,7 +241,4 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private Button zeroBtn;
     private Button commaBtn;
     private Button equalsBtn;
-
-    private TextView a;
-    private TextView b;
 }

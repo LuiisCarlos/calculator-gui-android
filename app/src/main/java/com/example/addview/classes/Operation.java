@@ -7,12 +7,6 @@ public class Operation {
 
     public Operation() { }
 
-    public Operation(Double x, Double y, Character operator) {
-        this.x = x;
-        this.y = y;
-        this.operator = operator;
-    }
-
     public Double getX() { return x; }
     public void setX(Double x) { this.x = x; }
 
